@@ -9,6 +9,8 @@ import com.rdt.redditcopy.response.TopicResponseHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -31,14 +33,18 @@ public class TopicService {
         topicResponse.setId(post.getId());
         topicResponse.setTitle(post.getTopic().getTitle());
         topicResponse.setBody(post.getTopic().getBody());
+        topicResponse.setCreatorId(post.getUser().getId());
         topicResponse.setCreatorUsername(post.getUser().getUsername());
         topicResponse.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(post.getUser().getId())).withRel("creatorLink"));
         topicResponse.setCommentList(
                 post.getCommentList().stream().map(
                         postComment -> {
                             TopicResponseHelper topicResponseHelper = new TopicResponseHelper();
+                            topicResponseHelper.setId(postComment.getId());
                             topicResponseHelper.setCommentBody(postComment.getComment().getBody());
+                            topicResponseHelper.setCreatorId(postComment.getUser().getId());
                             topicResponseHelper.setCreatorUsername(postComment.getUser().getUsername());
+                            topicResponseHelper.setSubCommentNumber(postComment.getCommentList().size());
                             topicResponseHelper.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(postComment.getUser().getId())).withRel("creatorLink"));
                             topicResponseHelper.setSelfLink(linkTo(methodOn(GeneralActionsController.class).getComment(postComment.getId())).withSelfRel());
                             //^^^^ MIGHT BE WRONG
@@ -47,5 +53,12 @@ public class TopicService {
                 ).toList()
         );
         return topicResponse;
+    }
+
+    public List<TopicResponse> createUnauthHomepageResponse(List<Post> postList) {
+        List<TopicResponse> topicResponseList = postList.stream().map(
+                this::createTopicResponse
+        ).toList();
+        return topicResponseList;
     }
 }

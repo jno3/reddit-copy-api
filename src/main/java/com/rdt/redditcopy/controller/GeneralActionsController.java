@@ -22,7 +22,12 @@ public class GeneralActionsController {
     private final UserService userService;
     private final TopicService topicService;
     private final CommentService commentService;
-
+    @GetMapping("/")
+    public ResponseEntity<List<TopicResponse>> getUnauthenticatedHomepage(){
+        List<Post> postList = postService.getAllPosts();
+        List<TopicResponse> topicResponseList = topicService.createUnauthHomepageResponse(postList);
+        return ResponseEntity.ok(topicResponseList);
+    }
     @GetMapping("/sub/")
     public ResponseEntity<AllSubsResponse> getAllSubs(){
         List<Sub> subList = subService.getAllSubs();

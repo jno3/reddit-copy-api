@@ -61,6 +61,7 @@ public class SubService {
                         .stream().map(
                                 post -> {
                                     SubResponseHelper subResponseHelper = new SubResponseHelper();
+                                    subResponseHelper.setId(post.getId());
                                     subResponseHelper.setTopicTitle(post.getTopic().getTitle());
                                     subResponseHelper.setCreatorUsername(post.getUser().getUsername());
                                     subResponseHelper.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(post.getUser().getId())).withRel("creatorLink"));
@@ -78,6 +79,7 @@ public class SubService {
         allSubsResponse.setAllSubsInfo(subList.stream().map(
                         sub -> {
                             AllSubsResponseHelper allSubsResponseHelper = new AllSubsResponseHelper();
+                            allSubsResponseHelper.setId(sub.getId());
                             allSubsResponseHelper.setSubName(sub.getName());
                             allSubsResponseHelper.setSubLink(linkTo(methodOn(GeneralActionsController.class).getSub(sub.getId())).withSelfRel());
                             return allSubsResponseHelper;

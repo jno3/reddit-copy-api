@@ -70,11 +70,15 @@ public class UserService {
 
     public List<List<Post>> getPostsFromFollowedSubs(String bearer) {
         User user = getUserByJwt(bearer);
-        List<Post> followedSubPostList = user.getFollowedSubList().stream()
+        List<List<Post>> followedSubPostList = user.getFollowedSubList().stream()
                 .map(
-                        sub -> (Post) sub.getPostList().stream()
+                        sub -> {
+                            return sub.getPostList().stream().filter(
+                                   post -> post.getPostType().equals(PostType.TOPIC)
+                           ).toList();
+                        }
                 ).toList();
-        return Collections.singletonList(followedSubPostList);
+        return followedSubPostList;
     }
 
     public UserResponse followSlashUnfollowSub(String bearer, Integer subId) {

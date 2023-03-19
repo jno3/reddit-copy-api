@@ -5,6 +5,7 @@ import org.springframework.hateoas.Link;
 
 @Data
 public class SubResponseHelper {
+    private Integer id;
     private String topicTitle;
     private String creatorUsername;
     private Link creatorLink;

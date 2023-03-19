@@ -10,6 +10,7 @@ public class TopicResponse {
     private Integer id;
     private String title;
     private String body;
+    private Integer creatorId;
     private String creatorUsername;
     private Link creatorLink;
     private List<TopicResponseHelper> commentList;
