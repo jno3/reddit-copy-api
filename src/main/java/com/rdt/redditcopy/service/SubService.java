@@ -63,6 +63,7 @@ public class SubService {
                                     SubResponseHelper subResponseHelper = new SubResponseHelper();
                                     subResponseHelper.setId(post.getId());
                                     subResponseHelper.setTopicTitle(post.getTopic().getTitle());
+                                    subResponseHelper.setCreatorId(post.getUser().getId());
                                     subResponseHelper.setCreatorUsername(post.getUser().getUsername());
                                     subResponseHelper.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(post.getUser().getId())).withRel("creatorLink"));
                                     subResponseHelper.setTopicLink(linkTo(methodOn(GeneralActionsController.class).getTopic(post.getId())).withSelfRel());

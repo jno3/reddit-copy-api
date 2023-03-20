@@ -7,6 +7,7 @@ import org.springframework.hateoas.Link;
 public class SubResponseHelper {
     private Integer id;
     private String topicTitle;
+    private Integer creatorId;
     private String creatorUsername;
     private Link creatorLink;
     private Link topicLink;

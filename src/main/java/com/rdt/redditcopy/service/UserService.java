@@ -6,13 +6,14 @@ import com.rdt.redditcopy.repository.UserRepository;
 import com.rdt.redditcopy.request.CreateCommentRequest;
 import com.rdt.redditcopy.request.CreateTopicRequest;
 import com.rdt.redditcopy.request.CreateSubRequest;
+import com.rdt.redditcopy.response.SubResponse;
 import com.rdt.redditcopy.response.UserResponse;
 import com.rdt.redditcopy.response.UserResponseHelper;
 import com.rdt.redditcopy.type.PostType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -68,17 +69,25 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow();
     }
 
-    public List<List<Post>> getPostsFromFollowedSubs(String bearer) {
+    //    public List<List<Post>> getPostsFromFollowedSubs(String bearer) {
+//        User user = getUserByJwt(bearer);
+//        List<List<Post>> followedSubPostList = user.getFollowedSubList().stream()
+//                .map(
+//                        sub -> {
+//                            return sub.getPostList().stream().filter(
+//                                   post -> post.getPostType().equals(PostType.TOPIC)
+//                           ).toList();
+//                        }
+//                ).toList();
+//        return followedSubPostList;
+//    }
+    public List<SubResponse> getPostsFromFollowedSubs(String bearer) {
         User user = getUserByJwt(bearer);
-        List<List<Post>> followedSubPostList = user.getFollowedSubList().stream()
-                .map(
-                        sub -> {
-                            return sub.getPostList().stream().filter(
-                                   post -> post.getPostType().equals(PostType.TOPIC)
-                           ).toList();
-                        }
-                ).toList();
-        return followedSubPostList;
+        List<Sub> subList = user.getFollowedSubList();
+        List<SubResponse> subResponseList = subList.stream().map(
+                subService::createSubResponse
+        ).toList();
+        return subResponseList;
     }
 
     public UserResponse followSlashUnfollowSub(String bearer, Integer subId) {
@@ -176,5 +185,22 @@ public class UserService {
         );
         userResponse.setSelfLink(linkTo(methodOn(GeneralActionsController.class).getUser(user.getId())).withSelfRel());
         return userResponse;
+    }
+
+    public List<Sub> getFollowedSubs(String bearer) {
+        User user = getUserByJwt(bearer);
+        return user.getFollowedSubList();
+    }
+
+    public Integer checkPost(String bearer, Integer postId) {
+        User user = getUserByJwt(bearer);
+        Post post = postService.getPostById(postId);
+        if(user.getUpvotedPostList().contains(post)){
+            return 1;
+        }else if(user.getDownvotedPostList().contains(post)){
+            return -1;
+        }else{
+            return 0;
+        }
     }
 }

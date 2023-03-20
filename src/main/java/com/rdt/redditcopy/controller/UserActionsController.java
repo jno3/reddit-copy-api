@@ -6,10 +6,7 @@ import com.rdt.redditcopy.model.User;
 import com.rdt.redditcopy.request.CreateCommentRequest;
 import com.rdt.redditcopy.request.CreateTopicRequest;
 import com.rdt.redditcopy.request.CreateSubRequest;
-import com.rdt.redditcopy.response.CommentResponse;
-import com.rdt.redditcopy.response.SubResponse;
-import com.rdt.redditcopy.response.TopicResponse;
-import com.rdt.redditcopy.response.UserResponse;
+import com.rdt.redditcopy.response.*;
 import com.rdt.redditcopy.service.CommentService;
 import com.rdt.redditcopy.service.SubService;
 import com.rdt.redditcopy.service.TopicService;
@@ -25,17 +22,45 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserActionsController {
     private final UserService userService;
     private final SubService subService;
     private final TopicService topicService;
     private final CommentService commentService;
+
+    //    @GetMapping("/")
+//    public ResponseEntity<List<List<Post>>> getPostsFromFollowedSubs(
+//            @RequestHeader("Authorization") String bearer
+//    ) {
+//
+//        return ResponseEntity.ok(userService.getPostsFromFollowedSubs(bearer));
+//    }
     @GetMapping("/")
-    public ResponseEntity<List<List<Post>>> getPostsFromFollowedSubs(
+    public ResponseEntity<List<SubResponse>> getPostsFromFollowedSubs(
             @RequestHeader("Authorization") String bearer
     ) {
         return ResponseEntity.ok(userService.getPostsFromFollowedSubs(bearer));
     }
+
+    @GetMapping("/postinfo/{postId}/")
+    public ResponseEntity<Integer> getPostSituation(
+            @RequestHeader("Authorization") String bearer,
+            @PathVariable Integer postId
+    ){
+        Integer response = userService.checkPost(bearer, postId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/sub/")
+    public ResponseEntity<AllSubsResponse> getFollowedSubs(
+            @RequestHeader("Authorization") String bearer
+    ){
+        List<Sub> subList = userService.getFollowedSubs(bearer);
+        AllSubsResponse allSubsResponse = subService.createAllSubsResponse(subList);
+        return ResponseEntity.ok(allSubsResponse);
+    }
+
     @PostMapping("/sub/")
     public ResponseEntity<SubResponse> createSub(
             @RequestBody CreateSubRequest createSubRequest,
@@ -46,6 +71,7 @@ public class UserActionsController {
         SubResponse subResponse = subService.createSubResponse(sub);
         return ResponseEntity.ok(subResponse);
     }
+
     @PostMapping("/sub/{subId}/")
     public ResponseEntity<TopicResponse> createTopic(
             @RequestBody CreateTopicRequest CreateTopicRequest,
@@ -56,6 +82,7 @@ public class UserActionsController {
         TopicResponse topicResponse = topicService.createTopicResponse(post);
         return ResponseEntity.ok(topicResponse);
     }
+
     @PostMapping("/post/{postId}/")
     public ResponseEntity<CommentResponse> createComment(
             @RequestBody CreateCommentRequest createCommentRequest,
@@ -75,16 +102,17 @@ public class UserActionsController {
         return ResponseEntity.ok(userService.followSlashUnfollowSub(bearer, subId));
     }
 
-    @PatchMapping("/post/upvote/{postId}")
+    @PostMapping("/post/upvote/{postId}/")
     public ResponseEntity<UserResponse> upvotePost(
             @RequestHeader("Authorization") String bearer,
             @PathVariable Integer postId
     ) {
+        System.out.println(bearer);
         UserResponse userResponse = userService.createUserResponse(userService.upvotePost(bearer, postId));
         return ResponseEntity.ok(userResponse);
     }
 
-    @PatchMapping("/sub/downvote/{postId}")
+    @PostMapping("/post/downvote/{postId}/")
     public ResponseEntity<UserResponse> downVotePost(
             @RequestHeader("Authorization") String bearer,
             @PathVariable Integer postId

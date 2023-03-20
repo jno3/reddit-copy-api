@@ -9,6 +9,8 @@ public class TopicResponseHelper {
     private String commentBody;
     private Integer creatorId;
     private String creatorUsername;
+    private Integer subId;
+    private String subName;
     private Integer subCommentNumber;
     private Link creatorLink;
     private Link selfLink;

@@ -2,6 +2,7 @@ package com.rdt.redditcopy.controller;
 
 import com.rdt.redditcopy.model.Post;
 import com.rdt.redditcopy.model.Sub;
+import com.rdt.redditcopy.model.Topic;
 import com.rdt.redditcopy.model.User;
 import com.rdt.redditcopy.response.*;
 import com.rdt.redditcopy.service.*;
@@ -16,6 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RestController
 @RequestMapping("/api/v1/general")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class GeneralActionsController {
     private final SubService subService;
     private final PostService postService;
@@ -24,7 +26,7 @@ public class GeneralActionsController {
     private final CommentService commentService;
     @GetMapping("/")
     public ResponseEntity<List<TopicResponse>> getUnauthenticatedHomepage(){
-        List<Post> postList = postService.getAllPosts();
+        List<Topic> postList = topicService.getAllTopics();
         List<TopicResponse> topicResponseList = topicService.createUnauthHomepageResponse(postList);
         return ResponseEntity.ok(topicResponseList);
     }

@@ -44,6 +44,8 @@ public class TopicService {
                             topicResponseHelper.setCommentBody(postComment.getComment().getBody());
                             topicResponseHelper.setCreatorId(postComment.getUser().getId());
                             topicResponseHelper.setCreatorUsername(postComment.getUser().getUsername());
+                            topicResponseHelper.setSubId(postComment.getSub().getId());
+                            topicResponseHelper.setSubName(postComment.getSub().getName());
                             topicResponseHelper.setSubCommentNumber(postComment.getCommentList().size());
                             topicResponseHelper.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(postComment.getUser().getId())).withRel("creatorLink"));
                             topicResponseHelper.setSelfLink(linkTo(methodOn(GeneralActionsController.class).getComment(postComment.getId())).withSelfRel());
@@ -55,10 +57,14 @@ public class TopicService {
         return topicResponse;
     }
 
-    public List<TopicResponse> createUnauthHomepageResponse(List<Post> postList) {
-        List<TopicResponse> topicResponseList = postList.stream().map(
-                this::createTopicResponse
+    public List<TopicResponse> createUnauthHomepageResponse(List<Topic> topicList) {
+        List<TopicResponse> topicResponseList = topicList.stream().map(
+                topic -> createTopicResponse(topic.getPost())
         ).toList();
         return topicResponseList;
+    }
+
+    public List<Topic> getAllTopics() {
+        return topicRepository.findAll();
     }
 }
