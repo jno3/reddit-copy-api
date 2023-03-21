@@ -52,6 +52,15 @@ public class UserActionsController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/subinfo/{subId}/")
+    public ResponseEntity<Boolean> getSubSituation(
+            @RequestHeader("Authorization") String bearer,
+            @PathVariable Integer subId
+    ){
+        Boolean response = userService.checkSub(bearer, subId);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/sub/")
     public ResponseEntity<AllSubsResponse> getFollowedSubs(
             @RequestHeader("Authorization") String bearer
@@ -94,7 +103,7 @@ public class UserActionsController {
         return ResponseEntity.ok(commentResponse);
     }
 
-    @PatchMapping("/sub/follow-unfollow/{subId}/")
+    @PostMapping("/sub/follow-unfollow/{subId}/")
     public ResponseEntity<UserResponse> followSub(
             @RequestHeader("Authorization") String bearer,
             @PathVariable Integer subId
@@ -107,7 +116,6 @@ public class UserActionsController {
             @RequestHeader("Authorization") String bearer,
             @PathVariable Integer postId
     ) {
-        System.out.println(bearer);
         UserResponse userResponse = userService.createUserResponse(userService.upvotePost(bearer, postId));
         return ResponseEntity.ok(userResponse);
     }

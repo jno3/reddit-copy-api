@@ -12,6 +12,8 @@ public class TopicResponse {
     private String body;
     private Integer creatorId;
     private String creatorUsername;
+    private Integer subId;
+    private String subName;
     private Link creatorLink;
     private List<TopicResponseHelper> commentList;
     private Link selfLink;

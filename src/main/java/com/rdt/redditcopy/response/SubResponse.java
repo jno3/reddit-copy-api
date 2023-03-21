@@ -10,6 +10,7 @@ public class SubResponse {
     private Integer id;
     private String name;
     private String description;
+    private List<Integer> subModList;
     private List<SubResponseHelper> topicList;
     private Link selfLink;
 }

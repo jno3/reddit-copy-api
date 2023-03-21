@@ -54,6 +54,11 @@ public class SubService {
         SubResponse subResponse = new SubResponse();
         subResponse.setId(sub.getId());
         subResponse.setName(sub.getName());
+        subResponse.setSubModList(
+                sub.getSuperUsersList().stream().map(
+                        User::getId
+                ).toList()
+        );
         subResponse.setDescription(sub.getDescription());
         subResponse.setTopicList(sub.getPostList().stream().filter(
                                 post -> post.getPostType() == PostType.TOPIC
@@ -65,6 +70,8 @@ public class SubService {
                                     subResponseHelper.setTopicTitle(post.getTopic().getTitle());
                                     subResponseHelper.setCreatorId(post.getUser().getId());
                                     subResponseHelper.setCreatorUsername(post.getUser().getUsername());
+                                    subResponseHelper.setSubId(post.getSub().getId());
+                                    subResponseHelper.setSubName(post.getSub().getName());
                                     subResponseHelper.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(post.getUser().getId())).withRel("creatorLink"));
                                     subResponseHelper.setTopicLink(linkTo(methodOn(GeneralActionsController.class).getTopic(post.getId())).withSelfRel());
                                     return subResponseHelper;

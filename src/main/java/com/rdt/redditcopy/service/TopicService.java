@@ -35,6 +35,8 @@ public class TopicService {
         topicResponse.setBody(post.getTopic().getBody());
         topicResponse.setCreatorId(post.getUser().getId());
         topicResponse.setCreatorUsername(post.getUser().getUsername());
+        topicResponse.setSubId(post.getSub().getId());
+        topicResponse.setSubName(post.getSub().getName());
         topicResponse.setCreatorLink(linkTo(methodOn(GeneralActionsController.class).getUser(post.getUser().getId())).withRel("creatorLink"));
         topicResponse.setCommentList(
                 post.getCommentList().stream().map(

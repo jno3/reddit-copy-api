@@ -203,4 +203,10 @@ public class UserService {
             return 0;
         }
     }
+
+    public Boolean checkSub(String bearer, Integer subId) {
+        User user = getUserByJwt(bearer);
+        Sub sub = subService.getSubById(subId);
+        return user.getFollowedSubList().contains(sub);
+    }
 }

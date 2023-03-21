@@ -9,6 +9,8 @@ public class SubResponseHelper {
     private String topicTitle;
     private Integer creatorId;
     private String creatorUsername;
+    private Integer subId;
+    private String subName;
     private Link creatorLink;
     private Link topicLink;
 }
