@@ -107,11 +107,64 @@
 >>localhost:8080/api/v1/user/sub/
 >>```
 >
->>POST Requests
+>>### POST Requests
+>>Create New Sub
 >>
+>>This request creates a new sub and gives back an object containing the sub that was created. The request body must contain the sub's name and description.
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/sub/
 >>
+>>request body:
+>>{
+>>      "name": "sub1name"
+>>      "description": "sub1description"
+>>}
+>>```
+>>Create New Topic
 >>
+>>This request creates a new topic and gives back an object containing the topic. The request body must contain a title and a body.
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/sub/{subId}/
 >>
+>>request body:
+>>{
+>>      "title": "topic1title",
+>>      "body": "topic1title"
+>>}
+>>```
+>>Create New Comment
 >>
+>>This request creates a new comment and gives back an object containing the comment. The request body must contain the comment's body.
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/post/{postId}/
 >>
+>>request body:
+>>{
+>>      "body": "comment1body"
+>>}
+>>```
+>>Follow/Unfollow Sub
 >>
+>>This request makes the user follow or unfollow a sub and gives back the updated user's object. The body must be empty.
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/sub/follow-unfollow/{subId}/
+>>```
+>>Like Post
+>>
+>>This request makes the user like a post (either comment or topic). The request body must be empty
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/post/upvote/{postId}/
+>>```
+>>Dislike Post
+>>
+>>This request makes the user dislike a post (either comment or topic). The request body must be empty
+>>```JSON
+>>request endpoint
+>>localhost:8080/api/v1/user/post/downvote/{postId}/
+>>```
+
