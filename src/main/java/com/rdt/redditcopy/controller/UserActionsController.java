@@ -28,14 +28,6 @@ public class UserActionsController {
     private final SubService subService;
     private final TopicService topicService;
     private final CommentService commentService;
-
-    //    @GetMapping("/")
-//    public ResponseEntity<List<List<Post>>> getPostsFromFollowedSubs(
-//            @RequestHeader("Authorization") String bearer
-//    ) {
-//
-//        return ResponseEntity.ok(userService.getPostsFromFollowedSubs(bearer));
-//    }
     @GetMapping("/")
     public ResponseEntity<List<SubResponse>> getPostsFromFollowedSubs(
             @RequestHeader("Authorization") String bearer
@@ -75,7 +67,6 @@ public class UserActionsController {
             @RequestBody CreateSubRequest createSubRequest,
             @RequestHeader("Authorization") String bearer
     ) {
-
         Sub sub = userService.createSub(bearer, createSubRequest);
         SubResponse subResponse = subService.createSubResponse(sub);
         return ResponseEntity.ok(subResponse);
@@ -83,11 +74,11 @@ public class UserActionsController {
 
     @PostMapping("/sub/{subId}/")
     public ResponseEntity<TopicResponse> createTopic(
-            @RequestBody CreateTopicRequest CreateTopicRequest,
+            @RequestBody CreateTopicRequest createTopicRequest,
             @RequestHeader("Authorization") String bearer,
             @PathVariable Integer subId
     ) {
-        Post post = userService.createTopic(bearer, CreateTopicRequest, subId);
+        Post post = userService.createTopic(bearer, createTopicRequest, subId);
         TopicResponse topicResponse = topicService.createTopicResponse(post);
         return ResponseEntity.ok(topicResponse);
     }
