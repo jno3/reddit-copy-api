@@ -8,8 +8,12 @@ import org.springframework.hateoas.Link;
 public class UserResponseHelper {
     private Integer id;
     private PostType postType;
+    private Integer subId;
     private String subName;
     private Link subLink;
     private String content;
     private Link selfLink;
+    private Integer postOnId;
+    private PostType postOnType;
+    private String postOnContent;
 }

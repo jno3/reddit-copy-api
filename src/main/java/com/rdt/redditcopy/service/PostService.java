@@ -73,12 +73,9 @@ public class PostService {
         user.getPostList().add(newPost);
         userRepository.save(user);
 
-//        comment.setPostOn(post);
-//        post.getCommentList().add(comment);
         newPost.setPostOn(post);
         post.getCommentList().add(newPost);
         postRepository.save(post);
-
         return postRepository.save(newPost);
     }
 

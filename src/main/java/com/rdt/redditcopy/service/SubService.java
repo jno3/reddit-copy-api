@@ -89,6 +89,7 @@ public class SubService {
                             AllSubsResponseHelper allSubsResponseHelper = new AllSubsResponseHelper();
                             allSubsResponseHelper.setId(sub.getId());
                             allSubsResponseHelper.setSubName(sub.getName());
+                            allSubsResponseHelper.setSubDescription(sub.getDescription());
                             allSubsResponseHelper.setSubLink(linkTo(methodOn(GeneralActionsController.class).getSub(sub.getId())).withSelfRel());
                             return allSubsResponseHelper;
                         }

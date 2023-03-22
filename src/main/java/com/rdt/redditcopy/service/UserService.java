@@ -170,14 +170,26 @@ public class UserService {
                             UserResponseHelper userResponseHelper = new UserResponseHelper();
                             userResponseHelper.setId(post.getId());
                             userResponseHelper.setPostType(post.getPostType());
+                            userResponseHelper.setSubId(post.getSub().getId());
                             userResponseHelper.setSubName(post.getSub().getName());
                             userResponseHelper.setSubLink(linkTo(methodOn(GeneralActionsController.class).getSub(post.getSub().getId())).withRel("subLink"));
                             if (post.getPostType() == PostType.TOPIC) {
-                                userResponseHelper.setContent(post.getTopic().getTitle());
+                                userResponseHelper.setContent(post.getTopic().getBody());
                                 userResponseHelper.setSelfLink(linkTo(methodOn(GeneralActionsController.class).getTopic(post.getId())).withSelfRel());
                             } else {
                                 userResponseHelper.setContent(post.getComment().getBody());
                                 userResponseHelper.setSelfLink(linkTo(methodOn(GeneralActionsController.class).getComment(post.getId())).withSelfRel());
+                                Post postOn = post.getPostOn();
+                                userResponseHelper.setPostOnId(postOn.getId());
+                                if(postOn.getPostType() == PostType.TOPIC){
+                                    userResponseHelper.setPostOnType(PostType.TOPIC);
+                                    userResponseHelper.setPostOnContent(postOn.getTopic().getTitle());
+                                }else{
+                                    userResponseHelper.setPostOnType(PostType.COMMENT);
+                                    userResponseHelper.setPostOnContent(postOn.getComment().getBody());
+                                }
+
+//                                userResponseHelper.setPostOnId(post.getPostOn().getId());
                             }
                             return userResponseHelper;
                         }
@@ -195,11 +207,11 @@ public class UserService {
     public Integer checkPost(String bearer, Integer postId) {
         User user = getUserByJwt(bearer);
         Post post = postService.getPostById(postId);
-        if(user.getUpvotedPostList().contains(post)){
+        if (user.getUpvotedPostList().contains(post)) {
             return 1;
-        }else if(user.getDownvotedPostList().contains(post)){
+        } else if (user.getDownvotedPostList().contains(post)) {
             return -1;
-        }else{
+        } else {
             return 0;
         }
     }
